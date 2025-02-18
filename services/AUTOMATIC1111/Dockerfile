@@ -1,4 +1,4 @@
-FROM alpine/git:2.36.2 as download
+FROM alpine/git:latest as download
 
 COPY clone.sh /clone.sh
 
@@ -14,7 +14,7 @@ RUN . /clone.sh generative-models https://github.com/Stability-AI/generative-mod
 RUN . /clone.sh stable-diffusion-webui-assets https://github.com/AUTOMATIC1111/stable-diffusion-webui-assets 6f7db241d2f8ba7457bac5ca9753331f0c266917
 
 
-FROM pytorch/pytorch:2.3.0-cuda12.1-cudnn8-runtime
+FROM pytorch/pytorch:2.6.0-cuda12.4-cudnn9-runtime
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
@@ -28,10 +28,9 @@ RUN --mount=type=cache,target=/var/cache/apt \
 
 WORKDIR /
 RUN --mount=type=cache,target=/root/.cache/pip \
-  git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
+  git clone https://github.com/m1293b/stable-diffusion-webui.git && \
   cd stable-diffusion-webui && \
-  git reset --hard v1.10.1 && \
-  pip install -r requirements_versions.txt
+  pip install -r requirements.txt
 
 
 ENV ROOT=/stable-diffusion-webui
